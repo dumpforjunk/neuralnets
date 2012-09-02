@@ -93,7 +93,13 @@ class Layer:
         Get the weight of the arc between a practicular input and output.
         """
         return self.weights[str(input) + "-" + str(output)]
-    
+
+    def set_weight(self, input, output, value):
+        """
+        Set the weight between an input to a layer and the output node.
+        """
+        self.weights[str(input) + "-" + str(output)] = value
+
     def activation_function(self, input):   
         """
         The logistic function.
