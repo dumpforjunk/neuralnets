@@ -43,6 +43,29 @@ class Perceptron:
                        for i in range(len(layer_node_counts) - 1)]
         self.layers += [Layer(layer_node_counts[-1], 1)]
     
+    def __str__(self):
+        """
+        Produce a string representation of the whole perceptrion, suitable for
+        saving to a file.
+        """
+        return (" ".join([str(layer.input_count) for layer in self.layers]) + "\n" + 
+                "\n".join(map(str, self.layers)))
+
+    @staticmethod
+    def new_from_string(string_representation):
+        """
+        Create a new perceptron object from a str(perceptron).
+        """
+        lines = string_representation.split("\n")
+        layer_node_counts = map(int, lines.pop(0).split(" "))
+        new_perceptron = Perceptron(layer_node_counts)
+        for layer_number in range(len(new_perceptron.layers)):
+            new_perceptron.layers[layer_number] = Layer.new_from_weight_string(
+                lines.pop(0),
+                new_perceptron.layers[layer_number].input_count, 
+                new_perceptron.layers[layer_number].output_count)
+        return new_perceptron
+
     def compute_result(self, input_signals):
         """
         Compute the output of the neural network for a given set of input 
@@ -76,7 +99,6 @@ class Perceptron:
                layer_input_signals[layer_number], layer_deltas[layer_number + 1],
                adjustment_strength) 
 
-
 class Layer:
     def __init__(self, input_count, output_count):
         """
@@ -88,6 +110,27 @@ class Layer:
                              for input in range(input_count)
                              for output in range(output_count)])
     
+    def __str__(self):
+        """
+        Produce a string representation of the weights in the layer.
+        """
+        return " ".join([str(self.get_weight(input, output))
+                         for input in range(self.input_count)
+                         for output in range(self.output_count)])
+
+    @staticmethod
+    def new_from_weight_string(string_representation, input_count, output_count):
+        """
+        Convert back to a layer object from a str(layer) given the input and
+        output counts.
+        """
+        weights = map(float, string_representation.split(" "))
+        new_layer = Layer(input_count, output_count)
+        for input in range(int(input_count)):
+            for output in range(int(output_count)):
+                new_layer.set_weight(input, output, weights.pop(0))
+        return new_layer
+
     def get_weight(self, input, output):
         """
         Get the weight of the arc between a practicular input and output.
