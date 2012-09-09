@@ -6,7 +6,7 @@ multilayerperceptron.py
 
 Provides the class Perceptron which represents a multi-layer perceptron and is initialised with a list giving the number of nodes in each layer.
     
-    import multilayerperceptron
+    from multilayerperceptron import Perceptron
 
     neural_net = Perceptron([3,2,3])
 
