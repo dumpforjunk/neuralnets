@@ -126,8 +126,8 @@ class Layer:
         """
         weights = map(float, string_representation.split(" "))
         new_layer = Layer(input_count, output_count)
-        for input in range(int(input_count)):
-            for output in range(int(output_count)):
+        for input in range(input_count):
+            for output in range(output_count):
                 new_layer.set_weight(input, output, weights.pop(0))
         return new_layer
 
